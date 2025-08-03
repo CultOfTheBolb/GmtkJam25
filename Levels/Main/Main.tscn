@@ -1,0 +1,91 @@
+[gd_scene load_steps=17 format=3 uid="uid://ci312j5tybn1h"]
+
+[ext_resource type="PackedScene" uid="uid://chgqcnxprgcnd" path="res://Objects/Player/Player.tscn" id="1_aup8q"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wgnu6"]
+sky_top_color = Color(0.37067, 0.43243, 0.671562, 1)
+sky_horizon_color = Color(0.603096, 0.643695, 0.833146, 1)
+ground_bottom_color = Color(0.153044, 0.235328, 0.31291, 1)
+ground_horizon_color = Color(0.608538, 0.662499, 0.717615, 1)
+
+[sub_resource type="Sky" id="Sky_7lmy7"]
+sky_material = SubResource("ProceduralSkyMaterial_wgnu6")
+
+[sub_resource type="Environment" id="Environment_kpjou"]
+background_mode = 2
+background_energy_multiplier = 2.0
+sky = SubResource("Sky_7lmy7")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 3
+ssao_enabled = true
+ssil_enabled = true
+glow_strength = 1.35
+
+[sub_resource type="Gradient" id="Gradient_7lmy7"]
+colors = PackedColorArray(0.418644, 0.00172106, 0.664084, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kpjou"]
+gradient = SubResource("Gradient_7lmy7")
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7lmy7"]
+albedo_texture = SubResource("GradientTexture2D_kpjou")
+
+[sub_resource type="BoxMesh" id="BoxMesh_aup8q"]
+material = SubResource("StandardMaterial3D_7lmy7")
+size = Vector3(50, 1, 50)
+
+[sub_resource type="Gradient" id="Gradient_pojpg"]
+colors = PackedColorArray(1, 0.621453, 0.721108, 1, 1, 0.834542, 0.898173, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fnosg"]
+gradient = SubResource("Gradient_pojpg")
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a2vw1"]
+albedo_texture = SubResource("GradientTexture2D_fnosg")
+
+[sub_resource type="SphereMesh" id="SphereMesh_wgnu6"]
+material = SubResource("StandardMaterial3D_a2vw1")
+radius = 15.0
+height = 30.0
+
+[sub_resource type="Gradient" id="Gradient_aup8q"]
+colors = PackedColorArray(3.86249e-06, 0.400866, 0.224747, 1, 0.000101267, 0.841752, 0.494439, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wgnu6"]
+gradient = SubResource("Gradient_aup8q")
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kpjou"]
+albedo_texture = SubResource("GradientTexture2D_wgnu6")
+
+[sub_resource type="TorusMesh" id="TorusMesh_wgnu6"]
+material = SubResource("StandardMaterial3D_kpjou")
+inner_radius = 2.5
+outer_radius = 5.0
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_kpjou")
+
+[node name="Light" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.876122, 1.76246e-07, 0.48209, 0.0959896, 0.979977, 0.174445, -0.472437, 0.199111, -0.858579, 0, 0, 0)
+light_energy = 1.5
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_aup8q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.9062, 2.18559, 5.18696)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_aup8q")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.8817, 3.05632, -27.8358)
+mesh = SubResource("SphereMesh_wgnu6")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.0036, 4.97688, -5.15599)
+mesh = SubResource("TorusMesh_wgnu6")

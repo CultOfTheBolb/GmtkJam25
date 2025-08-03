@@ -1,0 +1,53 @@
+[gd_scene load_steps=10 format=3 uid="uid://chgqcnxprgcnd"]
+
+[ext_resource type="Shader" uid="uid://caveqevqikw3m" path="res://Shaders/Moebius.gdshader" id="1_we6tp"]
+[ext_resource type="Texture2D" uid="uid://by6r1il7o6q7d" path="res://Assets/Hatching.jpg" id="4_b872d"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oansn"]
+render_priority = 0
+shader = ExtResource("1_we6tp")
+shader_parameter/hatch = ExtResource("4_b872d")
+shader_parameter/edge_threshold = 0.1
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/hatch_size = 3.0
+shader_parameter/hatch_thresh_1 = 0.4
+shader_parameter/hatch_thresh_2 = 0.5
+
+[sub_resource type="QuadMesh" id="QuadMesh_861e5"]
+material = SubResource("ShaderMaterial_oansn")
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_861e5"]
+
+[sub_resource type="Gradient" id="Gradient_oansn"]
+colors = PackedColorArray(0.0175687, 3.8649e-05, 0.292304, 1, 5.69868e-05, 0.368119, 0.894218, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cac6a"]
+gradient = SubResource("Gradient_oansn")
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b0me6"]
+albedo_texture = SubResource("GradientTexture2D_cac6a")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_oansn"]
+material = SubResource("StandardMaterial3D_b0me6")
+
+[node name="Player" type="CharacterBody3D"]
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.55618, 0.831062, 0, -0.831062, 0.55618, 0, 8.82581, 2.11086)
+projection = 1
+current = true
+size = 14.0
+
+[node name="MobiusShader" type="MeshInstance3D" parent="Camera"]
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_861e5")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.19209e-07, 0)
+shape = SubResource("CapsuleShape3D_861e5")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_oansn")
