@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://brcn7xxduc1o7"]
+
+[ext_resource type="Shader" uid="uid://df1hs03bh78j4" path="res://Shaders/ScribbleShift.gdshader" id="1_dag4k"]
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_dag4k")
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/size = 5.0
+shader_parameter/intensity = 0.05
+shader_parameter/rate = 0.17

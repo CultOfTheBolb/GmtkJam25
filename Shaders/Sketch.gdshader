@@ -14,6 +14,9 @@ uniform float hatch_size = 3.0;
 uniform float hatch_thresh_1 = 0.4;
 uniform float hatch_thresh_2 = 0.5;
 
+uniform float grain_amount = 0.01;
+uniform float grain_size = 2.0;
+
 // Depth Map calculations:
 //
 // The values returned by depth_texture are between 1.0 and 0.0
@@ -67,7 +70,6 @@ void fragment() {
 	float depth = linearize_depth(uv, INV_PROJECTION_MATRIX);
 	vec2 offset = 1.0 / VIEWPORT_SIZE;
 	vec3 normal = normalize_normal(texture(NORMAL_TEXTURE, uv).rgb);
-
 	float luminance = dot(bg.rgb, vec3(0.299, 0.587, 0.114));
 
 	//Sobel operators:
@@ -169,4 +171,8 @@ void fragment() {
 	}
 
 	ALBEDO *= mix(vec3(0.0), bg.xyz, mask);
+	
+    float noise = (fract(sin(dot(UV, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) * 2.0;
+    bg.rgb += noise * grain_amount * grain_size;
+    ALBEDO *= clamp(bg, 0.0, 1.0).rgb;
 }
