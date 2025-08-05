@@ -1,7 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://chgqcnxprgcnd"]
+[gd_scene load_steps=14 format=3 uid="uid://chgqcnxprgcnd"]
 
-[ext_resource type="Shader" uid="uid://caveqevqikw3m" path="res://Shaders/Moebius.gdshader" id="1_we6tp"]
+[ext_resource type="Script" uid="uid://baeen8x6l5bv5" path="res://Objects/Player/Components/Player.cs" id="1_nd6ml"]
+[ext_resource type="Shader" uid="uid://caveqevqikw3m" path="res://Shaders/Sketch.gdshader" id="1_we6tp"]
+[ext_resource type="Script" uid="uid://02l18q8fydvx" path="res://Components/StateMachine/StateMachine.cs" id="3_cac6a"]
 [ext_resource type="Texture2D" uid="uid://by6r1il7o6q7d" path="res://Assets/Hatching.jpg" id="4_b872d"]
+[ext_resource type="Shader" uid="uid://df1hs03bh78j4" path="res://Shaders/ScribbleShift.gdshader" id="4_y01d7"]
+[ext_resource type="Script" uid="uid://dla54umx68krj" path="res://Objects/Player/Components/states/Idling.cs" id="5_y01d7"]
+[ext_resource type="Script" uid="uid://chlpuvxps78ep" path="res://Objects/Player/Components/states/Moving.cs" id="6_7t0p5"]
+[ext_resource type="Script" uid="uid://cqiavrc2dugm1" path="res://Components/VelocityHandler/VelocityHandler.cs" id="7_ebgc0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_oansn"]
 render_priority = 0
@@ -12,6 +18,8 @@ shader_parameter/color = Color(0, 0, 0, 1)
 shader_parameter/hatch_size = 3.0
 shader_parameter/hatch_thresh_1 = 0.4
 shader_parameter/hatch_thresh_2 = 0.5
+shader_parameter/grain_amount = 0.1
+shader_parameter/grain_size = 2.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_861e5"]
 material = SubResource("ShaderMaterial_oansn")
@@ -20,20 +28,21 @@ size = Vector2(2, 2)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_861e5"]
 
-[sub_resource type="Gradient" id="Gradient_oansn"]
-colors = PackedColorArray(0.0175687, 3.8649e-05, 0.292304, 1, 5.69868e-05, 0.368119, 0.894218, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_cac6a"]
-gradient = SubResource("Gradient_oansn")
-fill_to = Vector2(1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b0me6"]
-albedo_texture = SubResource("GradientTexture2D_cac6a")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7t0p5"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_y01d7")
+shader_parameter/color = Color(0.390057, 0.563426, 1, 1)
+shader_parameter/size = 5.0
+shader_parameter/intensity = 0.05
+shader_parameter/rate = 0.17
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_oansn"]
-material = SubResource("StandardMaterial3D_b0me6")
+material = SubResource("ShaderMaterial_7t0p5")
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("stateMachine")]
+script = ExtResource("1_nd6ml")
+stateMachine = NodePath("StateMachine")
 
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.55618, 0.831062, 0, -0.831062, 0.55618, 0, 8.82581, 2.11086)
@@ -41,7 +50,7 @@ projection = 1
 current = true
 size = 14.0
 
-[node name="MobiusShader" type="MeshInstance3D" parent="Camera"]
+[node name="ScreenSpaceShaderQuad" type="MeshInstance3D" parent="Camera"]
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_861e5")
 
@@ -51,3 +60,22 @@ shape = SubResource("CapsuleShape3D_861e5")
 
 [node name="Body" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_oansn")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState", "parent")]
+script = ExtResource("3_cac6a")
+initialState = NodePath("Idling")
+parent = NodePath("..")
+metadata/_custom_type_script = "uid://02l18q8fydvx"
+
+[node name="Idling" type="Node" parent="StateMachine"]
+script = ExtResource("5_y01d7")
+
+[node name="Moving" type="Node" parent="StateMachine" node_paths=PackedStringArray("velocityHandler")]
+script = ExtResource("6_7t0p5")
+speed = 1000.0
+velocityHandler = NodePath("../../VelocityHandler")
+
+[node name="VelocityHandler" type="Node" parent="." node_paths=PackedStringArray("parent")]
+script = ExtResource("7_ebgc0")
+parent = NodePath("..")
+metadata/_custom_type_script = "uid://cqiavrc2dugm1"

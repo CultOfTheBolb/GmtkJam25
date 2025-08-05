@@ -1,11 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://ci312j5tybn1h"]
+[gd_scene load_steps=12 format=3 uid="uid://ci312j5tybn1h"]
 
 [ext_resource type="PackedScene" uid="uid://chgqcnxprgcnd" path="res://Objects/Player/Player.tscn" id="1_aup8q"]
+[ext_resource type="Shader" uid="uid://df1hs03bh78j4" path="res://Shaders/ScribbleShift.gdshader" id="2_wgnu6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wgnu6"]
-sky_top_color = Color(0.37067, 0.43243, 0.671562, 1)
-sky_horizon_color = Color(0.603096, 0.643695, 0.833146, 1)
-ground_bottom_color = Color(0.153044, 0.235328, 0.31291, 1)
+ground_bottom_color = Color(0.149276, 0.186834, 0.236865, 1)
 ground_horizon_color = Color(0.608538, 0.662499, 0.717615, 1)
 
 [sub_resource type="Sky" id="Sky_7lmy7"]
@@ -22,47 +21,43 @@ ssao_enabled = true
 ssil_enabled = true
 glow_strength = 1.35
 
-[sub_resource type="Gradient" id="Gradient_7lmy7"]
-colors = PackedColorArray(0.418644, 0.00172106, 0.664084, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_kpjou"]
-gradient = SubResource("Gradient_7lmy7")
-fill_to = Vector2(1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7lmy7"]
-albedo_texture = SubResource("GradientTexture2D_kpjou")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wgnu6"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_wgnu6")
+shader_parameter/color = Color(0, 0.908232, 0.689434, 1)
+shader_parameter/size = 5.0
+shader_parameter/intensity = 0.05
+shader_parameter/rate = 0.17
 
 [sub_resource type="BoxMesh" id="BoxMesh_aup8q"]
-material = SubResource("StandardMaterial3D_7lmy7")
+material = SubResource("ShaderMaterial_wgnu6")
 size = Vector3(50, 1, 50)
 
-[sub_resource type="Gradient" id="Gradient_pojpg"]
-colors = PackedColorArray(1, 0.621453, 0.721108, 1, 1, 0.834542, 0.898173, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_fnosg"]
-gradient = SubResource("Gradient_pojpg")
-fill_to = Vector2(1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a2vw1"]
-albedo_texture = SubResource("GradientTexture2D_fnosg")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7lmy7"]
+render_priority = 0
+shader = ExtResource("2_wgnu6")
+shader_parameter/color = Color(0.972628, 0.725908, 1, 1)
+shader_parameter/size = 5.0
+shader_parameter/intensity = 0.05
+shader_parameter/rate = 0.17
 
 [sub_resource type="SphereMesh" id="SphereMesh_wgnu6"]
-material = SubResource("StandardMaterial3D_a2vw1")
+material = SubResource("ShaderMaterial_7lmy7")
 radius = 15.0
 height = 30.0
 
-[sub_resource type="Gradient" id="Gradient_aup8q"]
-colors = PackedColorArray(3.86249e-06, 0.400866, 0.224747, 1, 0.000101267, 0.841752, 0.494439, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_wgnu6"]
-gradient = SubResource("Gradient_aup8q")
-fill_to = Vector2(1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kpjou"]
-albedo_texture = SubResource("GradientTexture2D_wgnu6")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kpjou"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_wgnu6")
+shader_parameter/color = Color(1, 0.559631, 0.382329, 1)
+shader_parameter/size = 5.0
+shader_parameter/intensity = 0.05
+shader_parameter/rate = 0.17
 
 [sub_resource type="TorusMesh" id="TorusMesh_wgnu6"]
-material = SubResource("StandardMaterial3D_kpjou")
+material = SubResource("ShaderMaterial_kpjou")
 inner_radius = 2.5
 outer_radius = 5.0
 
